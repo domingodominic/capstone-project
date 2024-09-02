@@ -7,12 +7,12 @@
 
 /* swiper styles */
 
-.swiperslide--container {
+.swiperslide--container,
+.swiper-slide {
   position: relative;
   overflow: hidden;
   display: grid;
   max-height: 400px;
-
   border-radius: 0.5rem;
   box-shadow: 0 0 10px #cfcfcf;
   grid-template-rows: 1fr 1fr;
@@ -30,4 +30,26 @@
   background-color: white;
   object-fit: cover;
   padding: 0.5rem;
+}
+
+.error {
+  color: red;
+}
+
+.book--btn {
+  padding: 1rem 0;
+  border: none;
+  background-color: #f4ce15;
+  color: white;
+  font-size: large;
+  font-family: poppins;
+  border-radius: 0.3rem;
+  cursor: pointer;
+}
+
+.book--btn:hover {
+  transition: 0.5s;
+  background-color: white;
+  color: #f4ce15;
+  outline: 2px solid #f4ce15;
 }

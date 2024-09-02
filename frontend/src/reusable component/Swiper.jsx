@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 export const MySwiper = ({ purpose, data, availableTimes }) => {
   const navigate = useNavigate();
 
-  console.log("Available timess fetch from swiper is ", availableTimes);
   return (
     <>
       {purpose === "highlights" ? (
@@ -21,7 +20,12 @@ export const MySwiper = ({ purpose, data, availableTimes }) => {
           {data?.map((item, i) => (
             <SwiperSlide key={i}>
               <div className="swiperslide--container">
-                <img src={item.foodPicture} alt="food image" height={200} />
+                <img
+                  src={item.foodPicture}
+                  alt="food image"
+                  height={200}
+                  width="100%"
+                />
                 <div className="content">
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}

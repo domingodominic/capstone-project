@@ -7,26 +7,26 @@ import API from "./API/api.js";
 function App() {
   // Action Types for the reducer
   const UPDATE_TIMES = "UPDATE_TIMES"; // Action for updating available times
-  const BOOK_TIME = "BOOK_TIME"; // Action for booking a specific time
+  const BOOK_TIME = "BOOK_TIME"; // Action for thebooking a specific time
 
   // Reducer function to handle state updates
   function reducer(state, action) {
     switch (action.type) {
       case UPDATE_TIMES: // Handle updating available times
-        const { date, times } = action.payload; // Destructure the date and times from action.payload
+        const { date, times } = action.payload; // just estructuring the date and times from action.payload
         const bookedTimesForDate = state.bookedTimes[date] || []; // Get booked times for the specific date, or an empty array if none are booked
         return {
-          ...state, // Spread the current state to keep the other parts of the state unchanged
+          ...state,
           availableTimes: times.filter(
             (time) => !bookedTimesForDate.includes(time) // Filter out times that are already booked for the selected date
           ),
         };
       case BOOK_TIME: // Handle booking a specific time
-        const { date: bookDate, time } = action.payload; // Destructure the date and time from action.payload
+        const { date: bookDate, time } = action.payload; // Destructuring the date and time from action.payload
         return {
-          ...state, // Spread the current state to keep the other parts of the state unchanged
+          ...state,
           bookedTimes: {
-            ...state.bookedTimes, // Spread the current bookedTimes object to preserve existing bookings
+            ...state.bookedTimes, //keep the current bookedtimes
             [bookDate]: [...(state.bookedTimes[bookDate] || []), time], // Add the new booked time to the array for the specific date
           },
           availableTimes: state.availableTimes.filter((t) => t !== time), // Remove the booked time from availableTimes
@@ -36,45 +36,9 @@ function App() {
     }
   }
 
-  function reducing(state, action) {
-    switch (action.type) {
-      case "UPDATE_TIMES":
-        const { date, times } = action.payload;
-        const isScheduledExist = state.bookedTimes[date] || [];
+  const { fetchAPI } = API; //since I can't connect with the API I just created a file for that and destrcuting it
 
-        return {
-          ...state,
-          availableTimes: times.filter(
-            (item) => !item.includes(isScheduledExist)
-          ),
-        };
-
-      case "BOOK_TIME":
-        const { date: bookedDate, time: bookedTime } = action.payload;
-
-        return {
-          ...state,
-          bookedTimes: {
-            ...state.bookedTimes,
-            [bookedDate]: [
-              ...(state.bookedTimes[bookedDate] || []),
-              bookedTime,
-            ],
-          },
-
-          availableTimes: state.availableTimes.filter(
-            (item) => item !== bookedTime
-          ),
-        };
-
-      default:
-        return state;
-    }
-  }
-
-  const { fetchAPI } = API; // Destructure fetchAPI from the API object
-
-  // Initialize state with an empty array for availableTimes and an object for bookedTimes
+  // Initializing the state with an empty array for availableTimes and an object for bookedTimes
   const [state, dispatch] = useReducer(reducer, {
     availableTimes: [], // Initially, no available times
     bookedTimes: {}, // Initially, no booked times
@@ -94,7 +58,7 @@ function App() {
       type: UPDATE_TIMES,
       payload: { date: today.toISOString().split("T")[0], times },
     });
-  }, []); // Empty dependency array means this runs once on component mount
+  }, []);
 
   // Function to handle booking a time
   const handleBooking = (date, time) => {
@@ -112,8 +76,8 @@ function App() {
           element={
             <BookingPage
               dispatch={dispatch}
-              availableTimes={state.availableTimes} // Pass available times as a prop to BookingPage
-              onBook={handleBooking} // Pass the booking handler as a prop to BookingPage
+              availableTimes={state.availableTimes}
+              onBook={handleBooking}
             />
           }
         />
