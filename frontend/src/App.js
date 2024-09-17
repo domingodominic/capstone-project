@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Mainpage from "./components/Mainpage";
 import BookingPage from "./components/booking components/BookingPage";
 import API from "./API/api.js";
+import TestHooks from "./components/hooks/TestHooks";
+import ConfirmedBooking from "./components/booking components/ConfirmedBooking";
 
 function App() {
   // Action Types for the reducer
@@ -81,6 +83,8 @@ function App() {
             />
           }
         />
+        <Route path="/confirmedBooking" element={<ConfirmedBooking />} />
+        <Route path="/tasks" element={<TestHooks />} />
       </Routes>
     </>
   );

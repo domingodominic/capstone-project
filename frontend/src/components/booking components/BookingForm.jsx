@@ -5,9 +5,10 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 
 export default function BookingForm({ availableTimes, dispatch, onBook }) {
-  const { fetchAPI } = API;
+  const { fetchAPI, submitAPI } = API;
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [selectedOcassion, setSelectedOcassion] = useState("");
   const [totalGUest, setTotalGuest] = useState(0);
 
@@ -15,7 +16,6 @@ export default function BookingForm({ availableTimes, dispatch, onBook }) {
   const navigate = useNavigate();
 
   //creating validation schema object for form validation
-
   const formSchema = Yup.object({
     Date: Yup.date().required("Date is required."),
     Time: Yup.string().required("Time is required."),
@@ -45,12 +45,20 @@ export default function BookingForm({ availableTimes, dispatch, onBook }) {
   };
 
   const handleSubmit = (values) => {
-    dispatch({
-      type: "BOOK_TIME",
-      payload: { date: selectedDate, time: selectedTime },
-    });
-    navigate("/");
-    alert("success !");
+    setLoading(true);
+    setTimeout(() => {
+      dispatch({
+        type: "BOOK_TIME",
+        payload: { date: selectedDate, time: selectedTime },
+      });
+
+      const isSuccessful = submitAPI(values);
+
+      if (isSuccessful) {
+        console.log("values of appointment data ", values);
+        navigate("/confirmedBooking", { state: { appointmentData: values } });
+      }
+    }, 3000);
   };
 
   const inputStyle = {
@@ -61,7 +69,7 @@ export default function BookingForm({ availableTimes, dispatch, onBook }) {
     borderRadius: "4px",
     boxShadow: "inset 0 1px 3px rgba(0, 0, 0, 0.1)",
     transition: "border-color 0.2s ease-in-out",
-    outline: "none", // Ensures the browser's default outline is removed
+    outline: "none",
   };
 
   return (
@@ -81,7 +89,7 @@ export default function BookingForm({ availableTimes, dispatch, onBook }) {
           onSubmit={handleSubmit}
         >
           {(formik) => (
-            <Form style={{ display: "grid", gap: "20px" }}>
+            <Form style={{ display: "grid", gap: "20px", width: "90%" }}>
               <h1
                 style={{
                   textAlign: "center",
@@ -209,7 +217,7 @@ export default function BookingForm({ availableTimes, dispatch, onBook }) {
 
               <input
                 type="button"
-                value="Book Now"
+                value={loading ? "Booking..." : "Book Now"}
                 className="book--btn"
                 onClick={() => formik.handleSubmit()}
               />

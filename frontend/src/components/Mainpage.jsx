@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect } from "react";
 import About from "./About";
+import FooterNavigation from "./FooterNavigation";
 import Hero from "./Hero";
 import Highlights from "./Highlights";
 import Navbar from "./Navbar";
@@ -13,6 +14,7 @@ function Mainpage() {
       <Highlights />
       <Testimonials />
       <About />
+      <FooterNavigation />
     </main>
   );
 }
